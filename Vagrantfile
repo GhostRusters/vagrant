@@ -71,4 +71,12 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", inline: "apt-get --assume-yes install curl"
   config.vm.provision "shell", inline: "apt-get --assume-yes install git"
   config.vm.provision "shell", inline: "curl -sSf https://static.rust-lang.org/rustup.sh | sh"
+
+  # STILL TO DO
+  # - nicer git shell (prompt, colors, etc. Is there a Git Bash terminal already?)
+  # - provision atom
+  # - make the bloody synced folders work
+  # - copy host user git configuration through synced folder
+  # - create ghostrusters dir on host homedir
+  # - clone/sync ghostrusters projects
 end
