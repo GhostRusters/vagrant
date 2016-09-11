@@ -1,6 +1,10 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+unless Vagrant.has_plugin?('vagrant-vbguest')
+  raise 'Please run "vagrant plugin install vagrant-vbguest" before'
+end
+
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
@@ -12,7 +16,9 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
-  config.vm.box = "hashicorp/precise64"
+  config.vm.box = "ubuntu/trusty64"
+  config.vm.box_check_update = true
+  config.vm.hostname = "ghostrusters"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -37,7 +43,7 @@ Vagrant.configure("2") do |config|
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
-  # config.vm.synced_folder "put_here", "/vagrant/put_here"
+  config.vm.synced_folder "put_here", "/vagrant/put_here"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -66,17 +72,18 @@ Vagrant.configure("2") do |config|
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: "apt-get update"
+  # config.vm.provision "shell", inline: "apt-get --assume-yes -f install"
   config.vm.provision "shell", inline: "apt-get --assume-yes install perl"
   config.vm.provision "shell", inline: "apt-get --assume-yes install vim"
   config.vm.provision "shell", inline: "apt-get --assume-yes install curl"
   config.vm.provision "shell", inline: "apt-get --assume-yes install git"
   config.vm.provision "shell", inline: "curl -sSf https://static.rust-lang.org/rustup.sh | sh"
+  config.vm.provision "shell", path: "atom_install.sh"
 
-  # STILL TO DO
-  # - nicer git shell (prompt, colors, etc. Is there a Git Bash terminal already?)
-  # - provision atom
-  # - make the bloody synced folders work
-  # - copy host user git configuration through synced folder
-  # - create ghostrusters dir on host homedir
-  # - clone/sync ghostrusters projects
+  config.vm.provision "file", source: "~/.gitconfig", destination: ".gitconfig"
+  config.vm.provision "file", source: "~/.ssh/id_rsa", destination: ".ssh/id_rsa"
+  config.vm.provision "file", source: "~/.ssh/id_rsa.pub", destination: ".ssh/id_rsa.pub"
+
+  # Message at the end of provisioning
+  config.vm.post_up_message = "Access this machine with 'vagrant ssh -- -X' if you want to use Atom"
 end
