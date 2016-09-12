@@ -43,7 +43,7 @@ Vagrant.configure("2") do |config|
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
-  config.vm.synced_folder "put_here", "/vagrant/put_here"
+  config.vm.synced_folder "shared", "/vagrant/shared"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -79,10 +79,17 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", inline: "apt-get --assume-yes install git"
   config.vm.provision "shell", inline: "curl -sSf https://static.rust-lang.org/rustup.sh | sh"
   config.vm.provision "shell", path: "atom_install.sh"
+  config.vm.provision "shell", inline: "apm install language-rust"
+  config.vm.provision "shell", inline: "apt-get --assume-yes install build-essential"
+
+  #racer is a code completion tool for atom and rust.
+  #install it requires compilation, linking and as such it takes a lot of time.
+  #if you want to, just uncomment below line.
+  #config.vm.provision "shell", inline: "cargo install racer"
 
   config.vm.provision "file", source: "~/.gitconfig", destination: ".gitconfig"
-  config.vm.provision "file", source: "~/.ssh/id_rsa", destination: ".ssh/id_rsa"
-  config.vm.provision "file", source: "~/.ssh/id_rsa.pub", destination: ".ssh/id_rsa.pub"
+  #config.vm.provision "file", source: "~/.ssh/id_rsa", destination: ".ssh/id_rsa"
+  #config.vm.provision "file", source: "~/.ssh/id_rsa.pub", destination: ".ssh/id_rsa.pub"
 
   # Message at the end of provisioning
   config.vm.post_up_message = "Access this machine with 'vagrant ssh -- -X' if you want to use Atom"
