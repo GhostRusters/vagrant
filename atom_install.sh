@@ -1,8 +1,0 @@
-su vagrant -c "sudo apt-get --assume-yes install gconf2"
-su vagrant -c "sudo apt-get --assume-yes install gconf-service"
-su vagrant -c "sudo apt-get --assume-yes install libgtk2.0-0"
-su vagrant -c "sudo apt-get --assume-yes install libnss3"
-su vagrant -c "sudo apt-get --assume-yes install gvfs-bin"
-su vagrant -c "sudo apt-get --assume-yes install xdg-utils"
-su vagrant -c "curl -LOSf https://github.com/atom/atom/releases/download/v1.10.2/atom-amd64.deb"
-su vagrant -c "sudo dpkg --install atom-amd64.deb"

@@ -1,0 +1,21 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+
+	config.vm.box = "bento/ubuntu-17.10"
+	config.vm.box_version = "201710.25.0"
+    config.vm.synced_folder "shared/", "/var/public"
+    config.vm.provision "shell", path:"provision.sh"
+
+    config.vm.provider :virtualbox do |vbox|
+      vbox.name = "java9-based"
+      vbox.customize ["modifyvm", :id, "--memory", 1024]
+      vbox.customize ["modifyvm", :id, "--cpus", 2]
+    end
+	
+	config.vm.define :ubuntu_java9 do |t|
+	end
+  
+	config.vm.post_up_message = "Inspired and totally based on https://github.com/lmcalpin/java9-vagrant-box"
+end

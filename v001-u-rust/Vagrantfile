@@ -1,9 +1,9 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-unless Vagrant.has_plugin?('vagrant-vbguest')
-  raise 'Please run "vagrant plugin install vagrant-vbguest" before'
-end
+#unless Vagrant.has_plugin?('vagrant-vbguest')
+#  raise 'Please run "vagrant plugin install vagrant-vbguest" before'
+#end
 
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
@@ -16,7 +16,8 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
-  config.vm.box = "ubuntu/trusty64"
+  config.vm.box = "bento/ubuntu-17.10"
+  config.vm.box_version = "201710.25.0"
   config.vm.box_check_update = true
   config.vm.hostname = "ghostrusters"
 
@@ -57,6 +58,9 @@ Vagrant.configure("2") do |config|
     vb.memory = "2048"
     vb.cpus = "4"
   end
+  
+  config.vm.define :ubuntu_rust do |t|
+  end
   #
   # View the documentation for the provider you are using for more
   # information on available options.
@@ -78,8 +82,6 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", inline: "apt-get --assume-yes install curl"
   config.vm.provision "shell", inline: "apt-get --assume-yes install git"
   config.vm.provision "shell", inline: "curl -sSf https://static.rust-lang.org/rustup.sh | sh"
-  config.vm.provision "shell", path: "atom_install.sh"
-  config.vm.provision "shell", inline: "apm install language-rust"
   config.vm.provision "shell", inline: "apt-get --assume-yes install build-essential"
 
   #racer is a code completion tool for atom and rust.
@@ -92,5 +94,5 @@ Vagrant.configure("2") do |config|
   #config.vm.provision "file", source: "~/.ssh/id_rsa.pub", destination: ".ssh/id_rsa.pub"
 
   # Message at the end of provisioning
-  config.vm.post_up_message = "Access this machine with 'vagrant ssh -- -X' if you want to use Atom"
+  config.vm.post_up_message = "Access this machine with 'vagrant ssh -- -X' if you want to use X Windows"
 end
